@@ -1,1 +1,3 @@
-# DNC-Sama
+# SAMA
+
+## SAMA.network RESTful API project
