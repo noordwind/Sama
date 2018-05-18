@@ -32,7 +32,8 @@ namespace Sama.Api.Framework
         {
             var errorCode = "error";
             var statusCode = HttpStatusCode.BadRequest;
-            var message = "There was an error.";
+            //var message = "There was an error.";
+            var message = exception.Message;
             switch(exception)
             {
                 case ServiceException e:

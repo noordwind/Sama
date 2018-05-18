@@ -59,12 +59,13 @@ namespace Sama.Api
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,
-            IApplicationLifetime applicationLifetime)
+            IApplicationLifetime applicationLifetime, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment() || env.EnvironmentName == "local")
             {
                 app.UseDeveloperExceptionPage();
             }
+            loggerFactory.AddConsole().AddDebug();
             app.UseAuthentication();
             app.UseCors(CorsPolicy);
             app.UseMiddleware<ErrorHandlerMiddleware>();
