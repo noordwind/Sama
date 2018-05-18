@@ -1,0 +1,19 @@
+@token = xxxxxxxxxxxxxxx
+
+POST http://localhost:5000/sign-up
+content-type: application/json
+
+{
+	"email": "user@mailinator.com",
+	"password": "secret",
+	"role": "admin"
+}
+
+###
+POST http://localhost:5000/sign-in
+content-type: application/json
+
+{
+	"email": "user@mailinator.com",
+	"password": "secret"
+}
