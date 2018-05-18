@@ -1,0 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Sama.Core.Domain.Ngos.Repositories
+{
+    public interface INgoRepository
+    {
+        Task<Ngo> GetAsync(Guid id);
+        Task<IEnumerable<Ngo>> GetAllAsync();
+        Task CreateAsync(Ngo ngo);
+        Task UpdateAsync(Ngo ngo);  
+    }
+}

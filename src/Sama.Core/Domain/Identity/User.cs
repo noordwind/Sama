@@ -14,6 +14,7 @@ namespace Sama.Core.Domain.Identity
         public string Email { get; protected set; }
         public string Role { get; protected set; }
         public string PasswordHash { get; protected set; }
+        public decimal Funds { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
         public DateTime UpdatedAt { get; protected set; }
 
@@ -44,6 +45,11 @@ namespace Sama.Core.Domain.Identity
         {
             PasswordHash = passwordHash;
             UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void SetFunds(decimal value)
+        {
+            Funds += value;
         }
     }
 }

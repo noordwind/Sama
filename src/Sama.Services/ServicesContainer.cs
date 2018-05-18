@@ -6,6 +6,8 @@ using Sama.Core.Domain.Identity.Factories;
 using Sama.Core.Domain.Identity.Specifications;
 using Sama.Core.Types;
 using Microsoft.AspNetCore.Identity;
+using Sama.Services.Data;
+using Sama.Infrastructure.Mongo;
 
 namespace Sama.Services
 {
@@ -22,6 +24,7 @@ namespace Sama.Services
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
             builder.RegisterType<PasswordHasher<User>>().As<IPasswordHasher<User>>();
+            builder.RegisterType<DataInitializer>().As<IMongoDbSeeder>();
         }
     }
 }

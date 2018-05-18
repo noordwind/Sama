@@ -2,6 +2,7 @@ using System.Reflection;
 using Autofac;
 using Sama.Core.Domain;
 using Sama.Core.Domain.Identity;
+using Sama.Core.Domain.Ngos;
 using Sama.Infrastructure.Mongo;
 
 namespace Sama.Infrastructure
@@ -15,6 +16,7 @@ namespace Sama.Infrastructure
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();  
             builder.AddMongoDB();
+            builder.AddMongoDBRepository<Ngo>("Ngos");
             builder.AddMongoDBRepository<RefreshToken>("RefreshTokens");
             builder.AddMongoDBRepository<User>("Users");
         }        

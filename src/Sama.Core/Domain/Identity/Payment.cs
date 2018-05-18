@@ -1,20 +1,19 @@
-﻿using System;
+using System;
 
-namespace Sama.Core.Domain.Donations
+namespace Sama.Core.Domain.Identity
 {
-    public class Donation : AggregateRoot
+    public class Payment : AggregateRoot
     {
         public Guid UserId { get; protected set; }
-        public Guid NgoId { get; protected set; }
         public decimal Value { get; protected set; }
         public string Hash { get; protected set; }
         public DateTime CreatedAt { get; protected set; } 
 
-        protected Donation()
+        protected Payment()
         {
         }      
 
-        public Donation(Guid id, Guid userId, decimal value, string hash) : base(id)
+        public Payment(Guid id, Guid userId, decimal value, string hash) : base(id)
         {
             UserId = userId;
             Value = value;

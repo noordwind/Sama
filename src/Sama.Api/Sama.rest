@@ -1,13 +1,14 @@
 @token = xxxxxxxxxxxxxxx
 @url = localhost:5000
+# @url = 165.227.143.8
 
 POST http://{{url}}/sign-up
 content-type: application/json
 
 {
-	"email": "user@sama.network",
+	"email": "user1@sama.network",
 	"password": "secret",
-	"role": "user"
+	"role": "ngo"
 }
 
 Response 200 OK
@@ -20,7 +21,7 @@ POST http://{{url}}/sign-in
 content-type: application/json
 
 {
-	"email": "user@sama.network",
+	"email": "user1@sama.network",
 	"password": "secret"
 }
 
@@ -30,5 +31,13 @@ Response 200 OK
   "refreshToken": null,
   "expires": 1526678460901
 }
+
+---------------
+
+
+###
+GET http://{{url}}/ngos
+content-type: application/json
+authorization: bearer {{token}}
 
 ---------------

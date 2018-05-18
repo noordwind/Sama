@@ -15,7 +15,6 @@ namespace Sama.Infrastructure.Mongo
 
         public async Task SeedAsync()
         {
-
             await CustomSeedAsync();
         }
 

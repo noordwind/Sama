@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Sama.Infrastructure.Mongo;
 
 namespace Sama.Api
 {
@@ -59,7 +60,8 @@ namespace Sama.Api
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,
-            IApplicationLifetime applicationLifetime, ILoggerFactory loggerFactory)
+            IApplicationLifetime applicationLifetime, ILoggerFactory loggerFactory,
+            IMongoDbSeeder dbSeeder)
         {
             if (env.IsDevelopment() || env.EnvironmentName == "local")
             {
@@ -70,6 +72,7 @@ namespace Sama.Api
             app.UseCors(CorsPolicy);
             app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseMvc();
+            dbSeeder.SeedAsync();
             applicationLifetime.ApplicationStopped.Register(() => Container.Dispose());
         }
     }
