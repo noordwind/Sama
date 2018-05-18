@@ -14,7 +14,7 @@ namespace Sama.Core.Domain.Identity
             }
             role = role.ToLowerInvariant();
 
-            return role == User || role == Admin;
+            return role == User || role == Admin || role == Ngo;
         }
     }
 }
