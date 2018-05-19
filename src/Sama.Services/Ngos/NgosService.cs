@@ -6,6 +6,7 @@ using Sama.Core.Domain.Identity.Repositories;
 using Sama.Core.Domain.Ngos;
 using Sama.Core.Domain.Ngos.Repositories;
 using Sama.Services.Ngos.Dtos;
+using Sama.Services.Shared.Dtos;
 
 namespace Sama.Services.Ngos
 {
@@ -61,30 +62,13 @@ namespace Sama.Services.Ngos
                         new DonationDto
                         {
                             Id = x.Id,
+                            NgoId = x.Id,
+                            NgoName = x.NgoName,
                             UserId = x.UserId,
                             Value = x.Value,
                             Hash = x.Hash,
                             CreatedAt = x.CreatedAt
                         }).ToList()
                 };
-
-        public async Task DonateAsync(Guid ngoId, Guid userId, decimal value)
-        {
-            var ngo = await _ngoRepository.GetAsync(ngoId);
-            if (ngo == null)
-            {
-                throw new ServiceException("ngo_not_found", $"NGO with id: '{ngoId}' was not found.");
-            }
-            var user = await _userRepository.GetAsync(userId);
-            if (user == null)
-            {
-                throw new ServiceException("user_not_found", $"User with id: '{userId}'  was not found.");
-            }
-            var donation = user.Donate(Guid.NewGuid(), ngo.Id, ngo.Name, value, "hash");
-            ngo.Donate(new Donation(donation.Id, userId, donation.Value, donation.Hash));
-            ngo.DonateChildren();
-            await _userRepository.UpdateAsync(user);
-            await _ngoRepository.UpdateAsync(ngo);
-        }
     }
 }

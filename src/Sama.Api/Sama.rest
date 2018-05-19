@@ -1,5 +1,5 @@
-@token = xxxxxxxxxxxxx
-@ngoId = xxxxxxxxxxxxx
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ODU5ZTUzMi01MGUwLTQwZGMtOWMyYy1hYjY0N2FkZWRmNzMiLCJ1bmlxdWVfbmFtZSI6Ijk4NTllNTMyLTUwZTAtNDBkYy05YzJjLWFiNjQ3YWRlZGY3MyIsImp0aSI6ImZiYTIyYjg5LTU0MTUtNGUyNy1hMDhiLWM4YWFlZTYwY2EzZCIsImlhdCI6IjE1MjY3NTg1OTg3ODMiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJ1c2VyIiwibmJmIjoxNTI2NzU4NTk4LCJleHAiOjE1MjY3NjIxOTgsImlzcyI6InNhbWEtaWRlbnRpdHktc2VydmljZSJ9.DSzcdfTS9kMSacc0O3v0bGV3xh35BcvkCHMdWXmAqkI
+@ngoId = d267de6d-66c3-4cf6-8788-034374cfbed2
 @url = localhost:5000
 # @url = 165.227.143.8
 # @url = api.sama.network
@@ -79,7 +79,7 @@ authorization: bearer {{token}}
 content-type: application/json
 
 {
-	"funds": 5000
+	"funds": 511000
 }
 
 Response 200 OK

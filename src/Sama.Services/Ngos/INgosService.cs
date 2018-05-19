@@ -9,6 +9,5 @@ namespace Sama.Services.Ngos
     {
         Task<NgoDto> GetAsync(Guid id);
         Task<IEnumerable<NgoDto>> GetAllAsync();
-        Task DonateAsync(Guid ngoId, Guid userId, decimal value);
     }
 }

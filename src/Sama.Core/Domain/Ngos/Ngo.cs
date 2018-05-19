@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sama.Core.Domain.Shared;
 
 namespace Sama.Core.Domain.Ngos
 {
@@ -48,6 +49,10 @@ namespace Sama.Core.Domain.Ngos
         public void DonateChildren()
         {
             if (Children.Count == 0 || Funds == 0)
+            {
+                return;
+            }
+            if (Children.All(x => x.Funds >= x.NeededFunds))
             {
                 return;
             }

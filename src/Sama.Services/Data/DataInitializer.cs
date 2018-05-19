@@ -13,11 +13,13 @@ namespace Sama.Services.Data
     public class DataInitializer : MongoDbSeeder
     {
         private readonly IPasswordHasher _passwordHasher;
+        private readonly INamesGenerator _namesGenerator;
 
         public DataInitializer(IMongoDatabase database, 
-            IPasswordHasher passwordHasher) : base(database)
+            IPasswordHasher passwordHasher, INamesGenerator namesGenerator) : base(database)
         {
             _passwordHasher = passwordHasher;
+            _namesGenerator = namesGenerator;
         }
 
         protected override async Task CustomSeedAsync()
@@ -43,18 +45,18 @@ namespace Sama.Services.Data
             }
 
             //Krakow
-            await CreateNgoAsync(ngoUsers[0].Id, 1, 50.049683, 19.854544, users);
-            await CreateNgoAsync(ngoUsers[1].Id, 2, 50.079683, 19.984544, users);
-            await CreateNgoAsync(ngoUsers[2].Id, 3, 50.019683, 19.544544, users);
-            await CreateNgoAsync(ngoUsers[3].Id, 4, 50.029683, 19.734544, users);
-            await CreateNgoAsync(ngoUsers[4].Id, 5, 50.059683, 19.944544, users);
+            await CreateNgoAsync(ngoUsers[0].Id, "Little kids", 50.049683, 19.854544, users);
+            await CreateNgoAsync(ngoUsers[1].Id, "Small orphanage", 50.079683, 19.984544, users);
+            await CreateNgoAsync(ngoUsers[2].Id, "Home for children" , 50.019683, 19.544544, users);
+            await CreateNgoAsync(ngoUsers[3].Id, "Kids place", 50.029683, 19.734544, users);
+            await CreateNgoAsync(ngoUsers[4].Id, "Children' hope", 50.059683, 19.944544, users);
 
            //Goa 
-            await CreateNgoAsync(ngoUsers[5].Id, 6, 15.533414, 73.764954, users);
-            await CreateNgoAsync(ngoUsers[6].Id, 7, 15.553414, 73.774954, users);
-            await CreateNgoAsync(ngoUsers[7].Id, 8, 15.543414, 73.714954, users);
-            await CreateNgoAsync(ngoUsers[8].Id, 9, 15.533414, 73.794954, users);
-            await CreateNgoAsync(ngoUsers[9].Id, 10, 15.583414, 73.734954, users);
+            await CreateNgoAsync(ngoUsers[5].Id, "Little kids", 15.533414, 73.764954, users);
+            await CreateNgoAsync(ngoUsers[6].Id, "Small orphanage", 15.553414, 73.774954, users);
+            await CreateNgoAsync(ngoUsers[7].Id, "Home for children", 15.543414, 73.714954, users);
+            await CreateNgoAsync(ngoUsers[8].Id, "Kids place", 15.533414, 73.794954, users);
+            await CreateNgoAsync(ngoUsers[9].Id, "Children' hope", 15.583414, 73.734954, users);
         }
 
         private async Task CreateAdminAsync()
@@ -85,11 +87,11 @@ namespace Sama.Services.Data
             return user;
         }
 
-        private async Task CreateNgoAsync(Guid ownerId, int number, double latitude, double longitude,
+        private async Task CreateNgoAsync(Guid ownerId, string name, double latitude, double longitude,
             IEnumerable<User> users)
         {
-            var ngo = new Ngo(Guid.NewGuid(), ownerId, $"NGO {number}",
-                "address", latitude, longitude, approved: true);
+            var ngo = new Ngo(Guid.NewGuid(), ownerId, name, "address", 
+                latitude, longitude, approved: true);
             var children = CreateChildren().ToList();
             foreach (var child in children)
             {
@@ -99,8 +101,7 @@ namespace Sama.Services.Data
             {
                 var donation = user.Donate(Guid.NewGuid(), ngo.Id, ngo.Name, 200, "hash");
                 await Database.GetCollection<User>("Users").ReplaceOneAsync(x => x.Id == user.Id, user);
-                ngo.Donate(new Core.Domain.Ngos.Donation(donation.Id,
-                    user.Id, donation.Value, donation.Hash));
+                ngo.Donate(donation);
             }
             ngo.DonateChildren();
             foreach (var child in children)
@@ -114,9 +115,11 @@ namespace Sama.Services.Data
 
         private IEnumerable<Child> CreateChildren()
         {
-            for (var i=0; i<10; i++)
+            var count = 10;
+            var names = _namesGenerator.Generate(10);
+            for (var i=0; i<count; i++)
             {
-                yield return new Child(Guid.NewGuid(), "Little Kid", DateTime.UtcNow.AddYears(-10));
+                yield return new Child(Guid.NewGuid(), $"{names[i].Item1} {names[i].Item2}", DateTime.UtcNow.AddYears(-10));
             }
         }
     }

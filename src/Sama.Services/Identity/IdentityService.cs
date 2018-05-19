@@ -10,6 +10,7 @@ using Sama.Core.Domain.Identity;
 using Sama.Core.Domain.Identity.Factories;
 using Sama.Core.Domain.Identity.Repositories;
 using Sama.Services.Identity.Dtos;
+using Sama.Services.Shared.Dtos;
 
 namespace Sama.Services.Identity
 {
@@ -65,6 +66,7 @@ namespace Sama.Services.Identity
                     new DonationDto
                     {
                         Id = x.Id,
+                        UserId = x.UserId,
                         NgoId = x.NgoId,
                         NgoName = x.NgoName,
                         Value = x.Value,

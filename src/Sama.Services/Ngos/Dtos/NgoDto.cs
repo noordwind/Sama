@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Sama.Services.Shared.Dtos;
 
 namespace Sama.Services.Ngos.Dtos
 {

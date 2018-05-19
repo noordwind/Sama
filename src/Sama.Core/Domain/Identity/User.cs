@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Sama.Core.Domain.Identity.Events;
+using Sama.Core.Domain.Shared;
 
 namespace Sama.Core.Domain.Identity
 {
@@ -67,7 +68,7 @@ namespace Sama.Core.Domain.Identity
             }
             DonatedFunds += value;
             Wallet = new Wallet(funds - value);
-            var donation = new Donation(id, ngoId, ngoName, value, hash);
+            var donation = new Donation(id, Id, ngoId, ngoName, value, hash);
             Donations.Add(donation);
 
             return donation;
