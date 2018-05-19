@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Sama.Core.Domain.Identity.Events;
 
@@ -14,7 +15,10 @@ namespace Sama.Core.Domain.Identity
         public string Email { get; protected set; }
         public string Role { get; protected set; }
         public string PasswordHash { get; protected set; }
-        public decimal Funds { get; protected set; }
+        public decimal DonatedFunds { get; protected set; }
+        public Wallet Wallet { get; protected set; } = new Wallet(0);
+        public IList<Payment> Payments { get; protected set; } = new List<Payment>();
+        public IList<Donation> Donations { get; protected set; } = new List<Donation>();
         public DateTime CreatedAt { get; protected set; }
         public DateTime UpdatedAt { get; protected set; }
 
@@ -47,9 +51,26 @@ namespace Sama.Core.Domain.Identity
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void SetFunds(decimal value)
+        public void AddFunds(Payment payment)
         {
-            Funds += value;
+            var funds = payment.Value + Wallet.Funds;
+            Wallet = new Wallet(funds);
+            Payments.Add(payment);
+        }
+
+        public Donation Donate(Guid id, Guid ngoId, string ngoName, decimal value, string hash)
+        {
+            var funds = Wallet.Funds;
+            if (funds - value < 0)
+            {
+                throw new DomainException("insufficient_donation_funds", "Insufficient funds for donation.");
+            }
+            DonatedFunds += value;
+            Wallet = new Wallet(funds - value);
+            var donation = new Donation(id, ngoId, ngoName, value, hash);
+            Donations.Add(donation);
+
+            return donation;
         }
     }
 }

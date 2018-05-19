@@ -1,6 +1,8 @@
-@token = xxxxxxxxxxxxxxx
+@token = xxxxxxxxxxxxx
+@ngoId = xxxxxxxxxxxxx
 @url = localhost:5000
 # @url = 165.227.143.8
+# @url = api.sama.network
 
 POST http://{{url}}/sign-up
 content-type: application/json
@@ -38,6 +40,47 @@ Response 200 OK
 ###
 GET http://{{url}}/ngos
 content-type: application/json
+
+---------------
+
+
+###
+GET http://{{url}}/ngos/{{ngoId}}
+content-type: application/json
+
+---------------
+
+
+###
+GET http://{{url}}/me
+content-type: application/json
 authorization: bearer {{token}}
 
 ---------------
+
+###
+POST http://{{url}}/me/funds
+authorization: bearer {{token}}
+content-type: application/json
+
+{
+	"funds": 5000
+}
+
+Response 200 OK
+{}
+
+
+---------------
+
+###
+POST http://{{url}}/ngos/{{ngoId}}/donate
+authorization: bearer {{token}}
+content-type: application/json
+
+{
+	"funds": 5000
+}
+
+Response 200 OK
+{}

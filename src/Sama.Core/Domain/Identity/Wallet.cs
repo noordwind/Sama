@@ -2,6 +2,15 @@ namespace Sama.Core.Domain.Identity
 {
     public class Wallet : IValueObject
     {
-        public decimal Value { get; protected set; }
+        public decimal Funds { get; protected set; }
+
+        protected Wallet()
+        {
+        }
+
+        public Wallet(decimal funds)
+        {
+            Funds = funds;
+        }
     }
 }

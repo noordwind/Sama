@@ -9,6 +9,7 @@ using System.Linq;
 using Sama.Core.Domain.Identity;
 using Sama.Core.Domain.Identity.Factories;
 using Sama.Core.Domain.Identity.Repositories;
+using Sama.Services.Identity.Dtos;
 
 namespace Sama.Services.Identity
 {
@@ -34,6 +35,55 @@ namespace Sama.Services.Identity
             _refreshTokenRepository = refreshTokenRepository;
             _userFactory = userFactory;
             _eventDispatcher = eventDispatcher;
+        }
+
+        public async Task<UserDto> GetAsync(Guid id)
+        {
+            var user = await _userRepository.GetAsync(id);
+
+            return user == null ? null : new UserDto
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Role = user.Role,
+                Funds = user.Wallet.Funds,
+                DonatedFunds = user.DonatedFunds,
+                CreatedAt = user.CreatedAt,
+                Wallet = new WalletDto
+                {
+                    Funds = user.Wallet.Funds
+                },
+                Payments = user.Payments.Select(x => 
+                    new PaymentDto
+                    {
+                        Id = x.Id,
+                        Value = x.Value,
+                        Hash = x.Hash,
+                        CreatedAt = x.CreatedAt
+                    }).ToList(),
+                Donations = user.Donations.Select(x => 
+                    new DonationDto
+                    {
+                        Id = x.Id,
+                        NgoId = x.NgoId,
+                        NgoName = x.NgoName,
+                        Value = x.Value,
+                        Hash = x.Hash,
+                        CreatedAt = x.CreatedAt
+                    }).ToList()
+                };
+        }
+
+        public async Task AddFunds(Guid id, decimal funds)
+        {
+            var user = await _userRepository.GetAsync(id);
+            if (user == null)
+            {
+                throw new ServiceException("user_not_found", 
+                    $"User: '{id}' was not found.");
+            }
+            user.AddFunds(new Payment(Guid.NewGuid(), id, funds, "hash"));
+            await _userRepository.UpdateAsync(user);
         }
 
         public async Task SignUpAsync(Guid id, string email, string password, string role)

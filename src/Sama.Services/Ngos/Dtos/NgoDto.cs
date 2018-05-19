@@ -13,7 +13,9 @@ namespace Sama.Services.Ngos.Dtos
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public decimal Funds { get; set; }  
+        public decimal DonatedFunds { get; set; }
         public bool Approved { get; set; }  
-        public IList<ChildInfoDto> Children { get; set; } = new List<ChildInfoDto>();        
+        public IList<ChildInfoDto> Children { get; set; }
+        public IList<DonationDto> Donations { get; set; } 
     }
 }

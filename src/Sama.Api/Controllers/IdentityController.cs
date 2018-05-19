@@ -7,6 +7,7 @@ using Sama.Services.Dispatchers;
 using Sama.Services.Identity.Commands;
 using Sama.Services;
 using Sama.Services.Identity;
+using Sama.Api.Framework;
 
 namespace Sama.Api.Controllers
 {
@@ -24,6 +25,11 @@ namespace Sama.Api.Controllers
             _refreshTokenService = refreshTokenService;
         }
 
+        [HttpGet("me")]
+        [Auth]
+        public async Task<IActionResult> Get()
+            => Single(await _identityService.GetAsync(UserId));
+
         [HttpPost("sign-up")]
         public async Task<IActionResult> SignUp([FromBody] SignUp command)
             => await DispatchAsync(command.BindId(c => c.Id));
@@ -35,5 +41,10 @@ namespace Sama.Api.Controllers
         [HttpPost("refresh-tokens/{refreshToken}/refresh")]
         public async Task<IActionResult> RefreshToken(string refreshToken)
             => Ok(await _refreshTokenService.CreateAccessTokenAsync(refreshToken));
+
+        [HttpPost("me/funds")]
+        [Auth]
+        public async Task<IActionResult> Donate([FromBody] AddFunds command)
+            => await DispatchAsync(command.Bind(c => c.UserId, UserId));
     }
 }

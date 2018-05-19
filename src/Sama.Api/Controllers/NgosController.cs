@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Sama.Services.Ngos;
 using System;
+using Sama.Api.Framework;
+using Sama.Services.Ngos.Commands;
+using Sama.Infrastructure.Mvc;
 
 namespace Sama.Api.Controllers
 {
@@ -33,5 +36,10 @@ namespace Sama.Api.Controllers
             
             return Single(ngo);
         }
+
+        [HttpPost("{ngoId}/donate")]
+        [Auth]
+        public async Task<IActionResult> Donate(Guid ngoId, [FromBody] DonateNgo command)
+            => await DispatchAsync(command.Bind(c => c.NgoId, ngoId).Bind(c => c.UserId, UserId));
     }
 }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Sama.Services;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Sama.Core.Domain;
 
 namespace Sama.Api.Framework
 {
@@ -36,6 +37,10 @@ namespace Sama.Api.Framework
             var message = exception.Message;
             switch(exception)
             {
+                case DomainException e:
+                    errorCode = e.Code;
+                    message = e.Message;
+                    break;
                 case ServiceException e:
                     errorCode = e.Code;
                     message = e.Message;
