@@ -33,6 +33,10 @@ namespace Sama.Core.Domain.Identity.Factories
             {
                 role = Role.User;
             }
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                username = $"user-{id}";
+            }
             var user = new User(id, email, username, role);
             _passwordHasher.SetPasswordHash(user, password);
 
