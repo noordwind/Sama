@@ -9,7 +9,7 @@ namespace Sama.Services.Identity
     {
         Task<UserDto> GetAsync(Guid id);
         Task AddFunds(Guid id, decimal funds);
-        Task SignUpAsync(Guid id, string email, string password, string role = "user");
+        Task SignUpAsync(Guid id, string email, string username, string password, string role = "user");
         Task<JsonWebToken> SignInAsync(string email, string password);
         Task ChangePasswordAsync(Guid userId, string currentPassword, string newPassword);         
     }

@@ -1,22 +1,16 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ODU5ZTUzMi01MGUwLTQwZGMtOWMyYy1hYjY0N2FkZWRmNzMiLCJ1bmlxdWVfbmFtZSI6Ijk4NTllNTMyLTUwZTAtNDBkYy05YzJjLWFiNjQ3YWRlZGY3MyIsImp0aSI6ImZiYTIyYjg5LTU0MTUtNGUyNy1hMDhiLWM4YWFlZTYwY2EzZCIsImlhdCI6IjE1MjY3NTg1OTg3ODMiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJ1c2VyIiwibmJmIjoxNTI2NzU4NTk4LCJleHAiOjE1MjY3NjIxOTgsImlzcyI6InNhbWEtaWRlbnRpdHktc2VydmljZSJ9.DSzcdfTS9kMSacc0O3v0bGV3xh35BcvkCHMdWXmAqkI
-@ngoId = d267de6d-66c3-4cf6-8788-034374cfbed2
+@token = xxxxxxxxxxxx
+@ngoId = xxxxxxxxxxxx
 @url = localhost:5000
-# @url = 165.227.143.8
-# @url = api.sama.network
 
 POST http://{{url}}/sign-up
 content-type: application/json
 
 {
 	"email": "user1@sama.network",
+	"username": "user1",
 	"password": "secret",
 	"role": "ngo"
 }
-
-Response 200 OK
-{}
-
----------------
 
 ###
 POST http://{{url}}/sign-in
@@ -27,36 +21,16 @@ content-type: application/json
 	"password": "secret"
 }
 
-Response 200 OK
-{
-  "accessToken": "secret_token",
-  "refreshToken": null,
-  "expires": 1526678460901
-}
-
----------------
-
-
 ###
 GET http://{{url}}/ngos
-content-type: application/json
-
----------------
-
 
 ###
 GET http://{{url}}/ngos/{{ngoId}}
-content-type: application/json
-
----------------
-
 
 ###
 GET http://{{url}}/me
 content-type: application/json
 authorization: bearer {{token}}
-
----------------
 
 ###
 POST http://{{url}}/me/funds
@@ -67,20 +41,11 @@ content-type: application/json
 	"funds": 5000
 }
 
-Response 200 OK
-{}
-
-
----------------
-
 ###
 POST http://{{url}}/ngos/{{ngoId}}/donate
 authorization: bearer {{token}}
 content-type: application/json
 
 {
-	"funds": 511000
+	"funds": 5000
 }
-
-Response 200 OK
-{}

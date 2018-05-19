@@ -21,7 +21,7 @@ namespace Sama.Core.Domain.Identity.Factories
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<User> CreateAsync(Guid id, string email, string password, string role = Role.User)
+        public async Task<User> CreateAsync(Guid id, string email, string username, string password, string role = Role.User)
         {
             var isEmailUnique = await _uniqueEmailSpecification.IsSatisfiedByAsync(email);
             if (!isEmailUnique)
@@ -33,7 +33,7 @@ namespace Sama.Core.Domain.Identity.Factories
             {
                 role = Role.User;
             }
-            var user = new User(id, email, role);
+            var user = new User(id, email, username, role);
             _passwordHasher.SetPasswordHash(user, password);
 
             return user;

@@ -14,6 +14,7 @@ namespace Sama.Core.Domain.Identity
             RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
             
         public string Email { get; protected set; }
+        public string Username { get; protected set; }
         public string Role { get; protected set; }
         public string PasswordHash { get; protected set; }
         public decimal DonatedFunds { get; protected set; }
@@ -27,12 +28,17 @@ namespace Sama.Core.Domain.Identity
         {
         }
 
-        public User(Guid id, string email, string role) : base(id)
+        public User(Guid id, string email, string username, string role) : base(id)
         {
             if (!EmailRegex.IsMatch(email))
             {
                 throw new DomainException("invalid_email", 
                     $"Invalid email: '{email}'.");
+            }
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                throw new DomainException("invalid_username", 
+                    $"Invalid username: '{username}'.");
             }
             if (!Identity.Role.IsValid(role))
             {
@@ -40,6 +46,7 @@ namespace Sama.Core.Domain.Identity
                     $"Invalid role: '{role}'.");
             }        
             Email = email.ToLowerInvariant();
+            Username = username.ToLowerInvariant();
             Role = role.ToLowerInvariant();
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
@@ -68,7 +75,7 @@ namespace Sama.Core.Domain.Identity
             }
             DonatedFunds += value;
             Wallet = new Wallet(funds - value);
-            var donation = new Donation(id, Id, ngoId, ngoName, value, hash);
+            var donation = new Donation(id, Id, Username, ngoId, ngoName, value, hash);
             Donations.Add(donation);
 
             return donation;

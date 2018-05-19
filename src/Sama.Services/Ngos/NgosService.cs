@@ -62,9 +62,10 @@ namespace Sama.Services.Ngos
                         new DonationDto
                         {
                             Id = x.Id,
+                            UserId = x.UserId,
+                            Username = x.Username,
                             NgoId = x.Id,
                             NgoName = x.NgoName,
-                            UserId = x.UserId,
                             Value = x.Value,
                             Hash = x.Hash,
                             CreatedAt = x.CreatedAt

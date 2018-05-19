@@ -8,6 +8,7 @@ namespace Sama.Services.Identity.Dtos
     {
         public Guid Id { get; set; }
         public string Email { get; set; }
+        public string Username { get; set; }
         public string Role { get; set; }
         public decimal Funds { get; set; }
         public decimal DonatedFunds { get; set; }

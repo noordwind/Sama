@@ -38,10 +38,11 @@ namespace Sama.Services.Data
             await CreateAdminAsync();
             var users = new List<User>();
             var ngoUsers = new List<User>();
-            for (var i=1; i<11; i++)
+            var usernames = _namesGenerator.Generate(10);
+            for (var i=0; i<10; i++)
             {
-                users.Add(await CreateUserAsync(i));
-                ngoUsers.Add(await CreateNgoUserAsync(i));
+                users.Add(await CreateUserAsync(i, $"{usernames[i].Item1}-{usernames[i].Item2}"));
+                ngoUsers.Add(await CreateNgoUserAsync(i, $"{usernames[i].Item2}-{usernames[i].Item1}"));
             }
 
             //Krakow
@@ -61,14 +62,14 @@ namespace Sama.Services.Data
 
         private async Task CreateAdminAsync()
         {
-            var user = new User(Guid.NewGuid(), $"admin@sama.network", "admin");
+            var user = new User(Guid.NewGuid(), $"admin@sama.network", "admin", "admin");
             _passwordHasher.SetPasswordHash(user, "secret");
             await Database.GetCollection<User>("Users").InsertOneAsync(user);
         }
 
-        private async Task<User> CreateUserAsync(int number)
+        private async Task<User> CreateUserAsync(int number, string username)
         {
-            var user = new User(Guid.NewGuid(), $"user{number}@sama.network", "user");
+            var user = new User(Guid.NewGuid(), $"user{number+1}@sama.network", username, "user");
             _passwordHasher.SetPasswordHash(user, "secret");
             var payment = new Payment(Guid.NewGuid(), user.Id, 5000, "secure-hash");
             user.AddFunds(payment);
@@ -78,9 +79,9 @@ namespace Sama.Services.Data
             return user;
         }
 
-        private async Task<User> CreateNgoUserAsync(int number)
+        private async Task<User> CreateNgoUserAsync(int number, string username)
         {
-            var user = new User(Guid.NewGuid(), $"ngo{number}@sama.network", "user");
+            var user = new User(Guid.NewGuid(), $"ngo{number+1}@sama.network", username, "user");
             _passwordHasher.SetPasswordHash(user, "secret");
             await Database.GetCollection<User>("Users").InsertOneAsync(user);
 

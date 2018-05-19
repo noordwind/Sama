@@ -46,6 +46,7 @@ namespace Sama.Services.Identity
             {
                 Id = user.Id,
                 Email = user.Email,
+                Username = user.Username,
                 Role = user.Role,
                 Funds = user.Wallet.Funds,
                 DonatedFunds = user.DonatedFunds,
@@ -67,6 +68,7 @@ namespace Sama.Services.Identity
                     {
                         Id = x.Id,
                         UserId = x.UserId,
+                        Username = x.Username,
                         NgoId = x.NgoId,
                         NgoName = x.NgoName,
                         Value = x.Value,
@@ -88,9 +90,9 @@ namespace Sama.Services.Identity
             await _userRepository.UpdateAsync(user);
         }
 
-        public async Task SignUpAsync(Guid id, string email, string password, string role)
+        public async Task SignUpAsync(Guid id, string email, string username, string password, string role)
         {
-            var user = await _userFactory.CreateAsync(id, email, password, role);
+            var user = await _userFactory.CreateAsync(id, email, username, password, role);
             await _userRepository.CreateAsync(user);
             await _eventDispatcher.DispatchAsync(user.Events.ToArray());
         }
