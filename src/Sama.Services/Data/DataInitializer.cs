@@ -14,7 +14,6 @@ namespace Sama.Services.Data
     {
         private readonly IPasswordHasher _passwordHasher;
         private readonly INamesGenerator _namesGenerator;
-        private readonly Random _random = new Random();
 
         public DataInitializer(IMongoDatabase database, 
             IPasswordHasher passwordHasher, INamesGenerator namesGenerator) : base(database)
@@ -117,7 +116,7 @@ namespace Sama.Services.Data
 
         private IEnumerable<Child> CreateChildren()
         {
-            var count = _random.Next(8,15);
+            var count = 10;
             var names = _namesGenerator.Generate(count);
             for (var i=0; i<count; i++)
             {
