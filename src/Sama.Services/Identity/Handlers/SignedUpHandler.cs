@@ -5,9 +5,16 @@ namespace Sama.Services.Identity.Handlers
 {
     public class SignedUpHandler : IEventHandler<SignedUp>
     {
+        private readonly IIdentityService _identityService;
+
+        public SignedUpHandler(IIdentityService identityService)
+        {
+            _identityService = identityService;
+        }
+
         public async Task HandleAsync(SignedUp @event)
         {
-            await Task.CompletedTask;
+            await _identityService.AddFunds(@event.UserId, 30000);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Sama.Services.Data
     {
         private readonly IPasswordHasher _passwordHasher;
         private readonly INamesGenerator _namesGenerator;
+        private readonly Random _random = new Random();
 
         public DataInitializer(IMongoDatabase database, 
             IPasswordHasher passwordHasher, INamesGenerator namesGenerator) : base(database)
@@ -38,8 +39,8 @@ namespace Sama.Services.Data
             await CreateAdminAsync();
             var users = new List<User>();
             var ngoUsers = new List<User>();
-            var usernames = _namesGenerator.Generate(10);
-            for (var i=0; i<10; i++)
+            var usernames = _namesGenerator.Generate(11);
+            for (var i=0; i<11; i++)
             {
                 users.Add(await CreateUserAsync(i, $"{usernames[i].Item1}-{usernames[i].Item2}"));
                 ngoUsers.Add(await CreateNgoUserAsync(i, $"{usernames[i].Item2}-{usernames[i].Item1}"));
@@ -50,14 +51,15 @@ namespace Sama.Services.Data
             await CreateNgoAsync(ngoUsers[1].Id, "Small orphanage", 50.079683, 19.984544, users);
             await CreateNgoAsync(ngoUsers[2].Id, "Home for children" , 50.019683, 19.544544, users);
             await CreateNgoAsync(ngoUsers[3].Id, "Kids place", 50.029683, 19.734544, users);
-            await CreateNgoAsync(ngoUsers[4].Id, "Children' hope", 50.059683, 19.944544, users);
+            await CreateNgoAsync(ngoUsers[4].Id, "Children's hope", 50.059683, 19.944544, users);
 
            //Goa 
-            await CreateNgoAsync(ngoUsers[5].Id, "Little kids", 15.533414, 73.764954, users);
-            await CreateNgoAsync(ngoUsers[6].Id, "Small orphanage", 15.553414, 73.774954, users);
-            await CreateNgoAsync(ngoUsers[7].Id, "Home for children", 15.543414, 73.714954, users);
-            await CreateNgoAsync(ngoUsers[8].Id, "Kids place", 15.533414, 73.794954, users);
-            await CreateNgoAsync(ngoUsers[9].Id, "Children' hope", 15.583414, 73.734954, users);
+            await CreateNgoAsync(ngoUsers[5].Id, "Goa Outreach", 15.533414, 73.764954, users);
+            await CreateNgoAsync(ngoUsers[6].Id, "Mitsuko Trust", 15.553414, 73.774954, users);
+            await CreateNgoAsync(ngoUsers[7].Id, "Live Happy", 15.543414, 73.714954, users);
+            await CreateNgoAsync(ngoUsers[8].Id, "CSA", 15.533414, 73.794954, users);
+            await CreateNgoAsync(ngoUsers[9].Id, "Bethesda Life Centre", 15.583414, 73.734954, users);
+            await CreateNgoAsync(ngoUsers[10].Id, "Care for India", 15.583414, 73.734954, users);
         }
 
         private async Task CreateAdminAsync()
@@ -71,7 +73,7 @@ namespace Sama.Services.Data
         {
             var user = new User(Guid.NewGuid(), $"user{number+1}@sama.network", username, "user");
             _passwordHasher.SetPasswordHash(user, "secret");
-            var payment = new Payment(Guid.NewGuid(), user.Id, 5000, "secure-hash");
+            var payment = new Payment(Guid.NewGuid(), user.Id, 30000, "secure-hash");
             user.AddFunds(payment);
             await Database.GetCollection<User>("Users").InsertOneAsync(user);
             await Database.GetCollection<Payment>("Payments").InsertOneAsync(payment);
@@ -91,8 +93,7 @@ namespace Sama.Services.Data
         private async Task CreateNgoAsync(Guid ownerId, string name, double latitude, double longitude,
             IEnumerable<User> users)
         {
-            var ngo = new Ngo(Guid.NewGuid(), ownerId, name, "address", 
-                latitude, longitude, approved: true);
+            var ngo = new Ngo(Guid.NewGuid(), ownerId, name, "address", latitude, longitude, approved: true);
             var children = CreateChildren().ToList();
             foreach (var child in children)
             {
@@ -100,7 +101,7 @@ namespace Sama.Services.Data
             }
             foreach (var user in users)
             {
-                var donation = user.Donate(Guid.NewGuid(), ngo.Id, ngo.Name, 200, "hash");
+                var donation = user.Donate(Guid.NewGuid(), ngo.Id, ngo.Name, 600, "hash");
                 await Database.GetCollection<User>("Users").ReplaceOneAsync(x => x.Id == user.Id, user);
                 ngo.Donate(donation);
             }
@@ -116,8 +117,8 @@ namespace Sama.Services.Data
 
         private IEnumerable<Child> CreateChildren()
         {
-            var count = 10;
-            var names = _namesGenerator.Generate(10);
+            var count = _random.Next(8,15);
+            var names = _namesGenerator.Generate(count);
             for (var i=0; i<count; i++)
             {
                 yield return new Child(Guid.NewGuid(), $"{names[i].Item1} {names[i].Item2}", DateTime.UtcNow.AddYears(-10));

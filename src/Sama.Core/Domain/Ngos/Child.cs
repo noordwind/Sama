@@ -16,16 +16,16 @@ namespace Sama.Core.Domain.Ngos
         }      
 
         public Child(Guid id, string fullName, 
-            DateTime birthDate, decimal neededFunds = 500) : base(id)
+            DateTime birthDate, decimal neededFunds = 1000) : base(id)
         {
             FullName = fullName;
             Birthdate = birthDate;
             NeededFunds = neededFunds;
         }
 
-        public void Donate(decimal value)
+        public void Donate(decimal funds)
         {
-            Funds += value;
+            Funds += funds;
         }
 
         public void SetNgo(Ngo ngo)
