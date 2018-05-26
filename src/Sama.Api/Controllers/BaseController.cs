@@ -53,18 +53,26 @@ namespace Sama.Api.Controllers
             {
                 return Ok(Enumerable.Empty<T>());
             }
-            Response.Headers.Add("link", GetLinkHeader(pagedResult));
-            Response.Headers.Add("x-total-count", pagedResult.TotalResults.ToString());
+            Response.Headers.Add("Link", GetLinkHeader(pagedResult));
+            Response.Headers.Add("X-Total-Count", pagedResult.TotalResults.ToString());
 
             return Ok(pagedResult.Items);
         }
 
         protected async Task<IActionResult> DispatchAsync<T>(T command, 
-            Guid? resourceId = null, string resource = "") where T : ICommand 
+            string createdAt = "", object routeValues = null, Guid? resourceId = null) where T : ICommand 
         {
             await _commandDispatcher.DispatchAsync(command);
+            if (resourceId.HasValue)
+            {
+                Response.Headers.Add("X-Resource-Id", resourceId.Value.ToString());
+            }
+            if (string.IsNullOrWhiteSpace(createdAt))
+            {
+                return NoContent();
+            }
 
-            return Ok();
+            return CreatedAtAction(createdAt, routeValues, null);
         }
 
         protected bool IsAdmin

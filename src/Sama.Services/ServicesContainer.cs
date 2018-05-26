@@ -25,6 +25,7 @@ namespace Sama.Services
                 .InstancePerLifetimeScope();
             builder.RegisterType<PasswordHasher<User>>().As<IPasswordHasher<User>>();
             builder.RegisterType<DataInitializer>().As<IMongoDbSeeder>();
+            builder.RegisterInstance(MapperConfig.Get()).SingleInstance();
         }
     }
 }

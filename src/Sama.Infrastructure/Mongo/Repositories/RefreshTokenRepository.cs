@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Sama.Core.Domain.Identity;
 using Sama.Core.Domain.Identity.Repositories;

@@ -6,6 +6,8 @@ namespace Sama.Core.Domain.Ngos
     {
         public string FullName { get; protected set; }
         public DateTime Birthdate { get; protected set; }
+        public string Gender { get; protected set; }
+        public string Notes { get; protected set; }
         public decimal Funds { get; protected set; }
         public decimal NeededFunds { get; protected set; }
 
@@ -18,7 +20,9 @@ namespace Sama.Core.Domain.Ngos
             Id = child.Id;
             FullName = child.FullName;
             Birthdate = child.Birthdate;
-            Funds = child.Funds;
+            Gender = child.Gender;
+            Notes = child.Notes;
+            Funds = child.GatheredFunds;
             NeededFunds = child.NeededFunds;
         }
 

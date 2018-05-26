@@ -7,7 +7,7 @@ namespace Sama.Core.Domain.Ngos.Repositories
     public interface INgoRepository
     {
         Task<Ngo> GetAsync(Guid id);
-        Task<IEnumerable<Ngo>> GetAllAsync();
+        Task<IEnumerable<Ngo>> BrowseAsync(string type = "");
         Task CreateAsync(Ngo ngo);
         Task UpdateAsync(Ngo ngo);  
     }

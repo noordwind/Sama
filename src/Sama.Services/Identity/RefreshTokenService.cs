@@ -1,9 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using Sama.Core.Domain;
 using Sama.Core.Domain.Identity;
 using Sama.Core.Domain.Identity.Repositories;
-using Sama.Core.Types;
 using Sama.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Identity;
 

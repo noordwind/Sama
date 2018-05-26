@@ -1,5 +1,5 @@
-@token = xxxxxxxxxxxx
-@ngoId = xxxxxxxxxxxx
+@token = xxxxxxxxxxxxxxx
+@ngoId = xxxxxxxxxxxxxxx
 @url = localhost:5000
 
 POST http://{{url}}/sign-up
@@ -9,7 +9,7 @@ content-type: application/json
 	"email": "user1@sama.network",
 	"username": "user1",
 	"password": "secret",
-	"role": "ngo"
+	"role": "user"
 }
 
 ###
@@ -47,5 +47,42 @@ authorization: bearer {{token}}
 content-type: application/json
 
 {
-	"funds": 5000
+	"funds": 4850
 }
+
+###
+POST http://{{url}}/ngos
+authorization: bearer {{token}}
+content-type: application/json
+
+{
+	"name": "Some NGO",
+	"description": "Some NGO description",
+	"fundsPerChild": 2500,
+	"location": {
+		"address": "Valid address or coordinates",
+		"latitude": 50.049683,
+		"longitude": 19.944544
+	}
+}
+
+
+
+###
+POST http://{{url}}/ngos/{{ngoId}}/approve
+authorization: bearer {{token}}
+content-type: application/json
+
+{
+	"notes": "some notes"
+}
+
+###
+POST http://{{url}}/ngos/{{ngoId}}/reject
+authorization: bearer {{token}}
+content-type: application/json
+
+{
+	"notes": "some notes"
+}
+

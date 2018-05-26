@@ -30,7 +30,7 @@ namespace Sama.Services.Shared.Services
             }
             var donation = user.Donate(Guid.NewGuid(), ngo.Id, ngo.Name, value, "hash");
             ngo.Donate(donation);
-            ngo.DonateChildren();
+            ngo.DistributeFundsToChildren();
             await _userRepository.UpdateAsync(user);
             await _ngoRepository.UpdateAsync(ngo);
         }

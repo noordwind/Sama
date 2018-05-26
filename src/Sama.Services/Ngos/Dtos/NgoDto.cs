@@ -9,13 +9,16 @@ namespace Sama.Services.Ngos.Dtos
         public Guid Id { get; set; }
         public Guid OwnerId { get; set; }
         public string Name { get; set; }
-        public string Address { get; set; }
         public string Description { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public decimal Funds { get; set; }  
+        public LocationDto Location { get; set; }
+        public decimal AvailableFunds { get; set; }
         public decimal DonatedFunds { get; set; }
-        public bool Approved { get; set; }  
+        public decimal FundsPerChild { get; set; }
+        public bool Approved { get; set; } 
+        public bool Rejected { get; set; }
+        public string Notes { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public IList<ChildInfoDto> Children { get; set; }
         public IList<DonationDto> Donations { get; set; } 
     }

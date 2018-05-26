@@ -22,7 +22,7 @@ namespace Sama.Api
 {
     public class Startup
     {
-        private static readonly string[] Headers = new []{ "x-total-count" };
+        private static readonly string[] Headers = new []{ "X-Total-Count", "X-Resource-Id" };
         private static readonly string CorsPolicy = "CorsPolicy";
         public IConfiguration Configuration { get; }
         public IContainer Container { get; private set; }
@@ -37,7 +37,11 @@ namespace Sama.Api
         {
             services.AddMvc().AddDefaultJsonOptions();
             services.AddJwt();
-            services.AddAuthorization(x => x.AddPolicy("admin", p => p.RequireRole("admin")));
+            services.AddAuthorization(x =>
+            {
+                x.AddPolicy("admin", p => p.RequireRole("admin"));
+                x.AddPolicy("ngo", p => p.RequireAssertion(a => a.User.IsInRole("ngo") || a.User.IsInRole("admin")));
+            });
             services.AddCors(options =>
             {
                 options.AddPolicy(CorsPolicy, cors => 

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Sama.Core.Domain;
 using Sama.Services.Dispatchers;
 using System.Linq;
+using AutoMapper;
 using Sama.Core.Domain.Identity;
 using Sama.Core.Domain.Identity.Factories;
 using Sama.Core.Domain.Identity.Repositories;
@@ -17,66 +18,32 @@ namespace Sama.Services.Identity
     public class IdentityService : IIdentityService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IPasswordHasher<User> _passwordHasher;
-        private readonly IJwtHandler _jwtHandler;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly IUserFactory _userFactory;
+        private readonly IMapper _mapper;
+        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IJwtHandler _jwtHandler;
         private readonly IEventDispatcher _eventDispatcher;
 
         public IdentityService(IUserRepository userRepository,
-            IPasswordHasher<User> passwordHasher,
-            IJwtHandler jwtHandler,
             IRefreshTokenRepository refreshTokenRepository,
             IUserFactory userFactory,
+            IMapper mapper,
+            IPasswordHasher<User> passwordHasher,
+            IJwtHandler jwtHandler,
             IEventDispatcher eventDispatcher)
         {
             _userRepository = userRepository;
-            _passwordHasher = passwordHasher;
-            _jwtHandler = jwtHandler;
             _refreshTokenRepository = refreshTokenRepository;
             _userFactory = userFactory;
+            _mapper = mapper;
+            _passwordHasher = passwordHasher;
+            _jwtHandler = jwtHandler;
             _eventDispatcher = eventDispatcher;
         }
 
         public async Task<UserDto> GetAsync(Guid id)
-        {
-            var user = await _userRepository.GetAsync(id);
-
-            return user == null ? null : new UserDto
-            {
-                Id = user.Id,
-                Email = user.Email,
-                Username = user.Username,
-                Role = user.Role,
-                Funds = user.Wallet.Funds,
-                DonatedFunds = user.DonatedFunds,
-                CreatedAt = user.CreatedAt,
-                Wallet = new WalletDto
-                {
-                    Funds = user.Wallet.Funds
-                },
-                Payments = user.Payments.Select(x => 
-                    new PaymentDto
-                    {
-                        Id = x.Id,
-                        Value = x.Value,
-                        Hash = x.Hash,
-                        CreatedAt = x.CreatedAt
-                    }).ToList(),
-                Donations = user.Donations.Select(x => 
-                    new DonationDto
-                    {
-                        Id = x.Id,
-                        UserId = x.UserId,
-                        Username = x.Username,
-                        NgoId = x.NgoId,
-                        NgoName = x.NgoName,
-                        Value = x.Value,
-                        Hash = x.Hash,
-                        CreatedAt = x.CreatedAt
-                    }).ToList()
-                };
-        }
+            => _mapper.Map<UserDto>(await _userRepository.GetAsync(id));
 
         public async Task AddFunds(Guid id, decimal funds)
         {
@@ -99,7 +66,7 @@ namespace Sama.Services.Identity
 
         public async Task<JsonWebToken> SignInAsync(string email, string password)
         {
-            var user = await _userRepository.GetAsync(email);
+            var user = await _userRepository.GetByEmailAsync(email);
             if (user == null || !ValidatePassword(user,password, _passwordHasher))
             {
                 throw new ServiceException("invalid_credentials",

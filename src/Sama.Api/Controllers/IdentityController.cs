@@ -32,7 +32,8 @@ namespace Sama.Api.Controllers
 
         [HttpPost("sign-up")]
         public async Task<IActionResult> SignUp([FromBody] SignUp command)
-            => await DispatchAsync(command.BindId(c => c.Id));
+            => await DispatchAsync(command.BindId(c => c.Id), 
+                createdAt: nameof(Get), resourceId: command.Id);
 
         [HttpPost("sign-in")]
         public async Task<IActionResult> SignIn([FromBody] SignIn command)
@@ -44,7 +45,7 @@ namespace Sama.Api.Controllers
 
         [HttpPost("me/funds")]
         [Auth]
-        public async Task<IActionResult> Donate([FromBody] AddFunds command)
+        public async Task<IActionResult> AddFunds([FromBody] AddFunds command)
             => await DispatchAsync(command.Bind(c => c.UserId, UserId));
     }
 }

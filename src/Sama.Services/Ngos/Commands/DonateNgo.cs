@@ -6,7 +6,7 @@ namespace Sama.Services.Ngos.Commands
     public class DonateNgo : ICommand
     {
         public Guid NgoId { get; }
-        public Guid UserId { get; set; }
+        public Guid UserId { get; }
         public decimal Funds { get; }
 
         [JsonConstructor]

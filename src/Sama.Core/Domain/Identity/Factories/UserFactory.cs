@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Sama.Core.Domain.Identity.Repositories;
 using Sama.Core.Domain.Identity.Services;
 using Sama.Core.Domain.Identity.Specifications;
 
@@ -8,16 +7,16 @@ namespace Sama.Core.Domain.Identity.Factories
 {
     public class UserFactory : IUserFactory
     {
-        private readonly IUserRepository _userRepository;
         private readonly IUniqueEmailSpecification _uniqueEmailSpecification;
+        private readonly IUniqueUsernameSpecification _uniqueUsernameSpecification;
         private readonly IPasswordHasher _passwordHasher;
 
-        public UserFactory(IUserRepository userRepository,
-            IUniqueEmailSpecification uniqueEmailSpecification,
+        public UserFactory(IUniqueEmailSpecification uniqueEmailSpecification,
+            IUniqueUsernameSpecification uniqueUsernameSpecification,
             IPasswordHasher passwordHasher)
         {
-            _userRepository = userRepository;
             _uniqueEmailSpecification = uniqueEmailSpecification;
+            _uniqueUsernameSpecification = uniqueUsernameSpecification;
             _passwordHasher = passwordHasher;
         }
 
@@ -28,6 +27,12 @@ namespace Sama.Core.Domain.Identity.Factories
             {
                 throw new DomainException("email_in_use",
                     $"Email: '{email}' is already in use.");
+            }
+            var isUernameUnique = await _uniqueUsernameSpecification.IsSatisfiedByAsync(username);
+            if (!isUernameUnique)
+            {
+                throw new DomainException("username_in_use",
+                    $"Username: '{username}' is already in use.");
             }
             if (string.IsNullOrWhiteSpace(role))
             {
