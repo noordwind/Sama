@@ -22,6 +22,14 @@ namespace Sama.Core.Domain.Identity.Factories
 
         public async Task<User> CreateAsync(Guid id, string email, string username, string password, string role = Role.User)
         {
+            if (string.IsNullOrWhiteSpace(role))
+            {
+                role = Role.User;
+            }
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                username = $"user-{id}";
+            }
             var isEmailUnique = await _uniqueEmailSpecification.IsSatisfiedByAsync(email);
             if (!isEmailUnique)
             {
@@ -33,14 +41,6 @@ namespace Sama.Core.Domain.Identity.Factories
             {
                 throw new DomainException("username_in_use",
                     $"Username: '{username}' is already in use.");
-            }
-            if (string.IsNullOrWhiteSpace(role))
-            {
-                role = Role.User;
-            }
-            if (string.IsNullOrWhiteSpace(username))
-            {
-                username = $"user-{id}";
             }
             var user = new User(id, email, username, role);
             _passwordHasher.SetPasswordHash(user, password);
