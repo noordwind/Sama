@@ -9,8 +9,9 @@ namespace Sama.Services.Ngos.Dtos
         public Guid Id { get; set; }
         public Guid OwnerId { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
         public LocationDto Location { get; set; }
+        public string Description { get; set; }
+        public string State { get; set; }
         public decimal AvailableFunds { get; set; }
         public decimal DonatedFunds { get; set; }
         public decimal FundsPerChild { get; set; }

@@ -65,7 +65,7 @@ namespace Sama.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,
             IApplicationLifetime applicationLifetime, ILoggerFactory loggerFactory,
-            IMongoDbSeeder dbSeeder)
+            IMongoDbInitializer dbInitializer, IMongoDbSeeder dbSeeder)
         {
             if (env.IsDevelopment() || env.EnvironmentName == "local")
             {
@@ -76,7 +76,8 @@ namespace Sama.Api
             app.UseCors(CorsPolicy);
             app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseMvc();
-            dbSeeder.SeedAsync();
+            dbInitializer.InitializeAsync()
+                .ContinueWith(x => dbSeeder.SeedAsync());
             applicationLifetime.ApplicationStopped.Register(() => Container.Dispose());
         }
     }

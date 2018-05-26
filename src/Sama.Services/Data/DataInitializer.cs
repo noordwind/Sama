@@ -120,7 +120,7 @@ namespace Sama.Services.Data
             foreach (var child in children)
             {
                 var childInfo = ngo.Children.Single(x => x.Id == child.Id);
-                child.Donate(childInfo.Funds);
+                child.Donate(childInfo.GatheredFunds);
             }
 
             await Database.GetCollection<Ngo>("Ngos").InsertOneAsync(ngo);

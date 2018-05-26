@@ -38,7 +38,7 @@ namespace Sama.Core.Domain.Ngos
             Location = location;
             Description = description;
             FundsPerChild = fundsPerChild;
-            State = "new";
+            State = approved ? "approved" : "new";
             Notes = string.Empty;
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
@@ -70,7 +70,7 @@ namespace Sama.Core.Domain.Ngos
             {
                 return;
             }
-            if (Children.All(x => x.Funds >= x.NeededFunds))
+            if (Children.All(x => x.GatheredFunds >= x.NeededFunds))
             {
                 return;
             }
@@ -78,9 +78,9 @@ namespace Sama.Core.Domain.Ngos
             {
                 throw new DomainException("insufficient_ngo_funds", "Insufficient NGO funds for children donations.");                
             }
-            foreach (var child in Children.Where(x => x.Funds < x.NeededFunds).OrderByDescending(x => x.NeededFunds))
+            foreach (var child in Children.Where(x => x.GatheredFunds < x.NeededFunds).OrderByDescending(x => x.NeededFunds))
             {
-                var neededFunds = child.NeededFunds - child.Funds;
+                var neededFunds = child.NeededFunds - child.GatheredFunds;
                 if (AvailableFunds - neededFunds < 0)
                 {
                     neededFunds = AvailableFunds;
