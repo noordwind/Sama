@@ -35,7 +35,7 @@ namespace Sama.Services.Ngos
             => _mapper.Map<NgoDto>(await _ngoRepository.GetAsync(id));
 
         public async Task<IEnumerable<NgoDto>> BrowseAsync(BrowseNgos query)
-            => await _ngoRepository.BrowseAsync(query.Type)
+            => await _ngoRepository.BrowseAsync(query.State)
                 .ContinueWith(c => c.Result.Select(_mapper.Map<NgoDto>));
 
         public async Task CreateAsync(Guid id, Guid ownerId, string name,
@@ -58,7 +58,8 @@ namespace Sama.Services.Ngos
             if (foundLocation == null)
             {
                 throw new ServiceException("address_not_found",
-                    $"Address: '{location.Address} [lat: {location.Latitude}, lng: {location.Longitude}]' was not found.");
+                    $"Address: '{location.Address} [lat: {location.Latitude}, " +
+                    $"lng: {location.Longitude}]' was not found.");
             }
 
             var ngo = new Ngo(id, ownerId, name, new Core.Domain.Shared.Location(foundLocation.Address,

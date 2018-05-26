@@ -14,8 +14,7 @@ namespace Sama.Core.Domain.Ngos
         public decimal AvailableFunds { get; protected set; }
         public decimal DonatedFunds { get; protected set; }
         public decimal FundsPerChild { get; protected set; }
-        public bool Approved { get; protected set; } 
-        public bool Rejected { get; protected set; }
+        public string State { get; protected set; } 
         public string Notes { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
         public DateTime UpdatedAt { get; protected set; }
@@ -39,7 +38,7 @@ namespace Sama.Core.Domain.Ngos
             Location = location;
             Description = description;
             FundsPerChild = fundsPerChild;
-            Approved = approved;
+            State = "new";
             Notes = string.Empty;
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
@@ -47,16 +46,14 @@ namespace Sama.Core.Domain.Ngos
 
         public void Approve(string notes)
         {
-            Approved = true;
-            Rejected = false;
+            State = "approved";
             Notes = notes ?? string.Empty;
             UpdatedAt = DateTime.UtcNow;
         }
 
         public void Reject(string notes)
         {
-            Approved = false;
-            Rejected = true;
+            State = "rejected";
             Notes = notes ?? string.Empty;
             UpdatedAt = DateTime.UtcNow;
         }

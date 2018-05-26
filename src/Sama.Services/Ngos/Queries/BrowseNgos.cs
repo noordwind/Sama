@@ -4,6 +4,6 @@ namespace Sama.Services.Ngos.Queries
 {
     public class BrowseNgos : PagedQuery
     {
-        public string Type { get; set; }
+        public string State { get; set; }
     }
 }

@@ -14,8 +14,6 @@ namespace Sama.Services.Ngos.Dtos
         public decimal AvailableFunds { get; set; }
         public decimal DonatedFunds { get; set; }
         public decimal FundsPerChild { get; set; }
-        public bool Approved { get; set; } 
-        public bool Rejected { get; set; }
         public string Notes { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

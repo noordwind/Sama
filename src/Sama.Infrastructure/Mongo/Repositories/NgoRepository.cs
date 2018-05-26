@@ -19,20 +19,14 @@ namespace Sama.Infrastructure.Mongo.Repositories
         public async Task<Ngo> GetAsync(Guid id)
             => await _repository.GetAsync(id);
 
-        public async Task<IEnumerable<Ngo>> BrowseAsync(string type = "")
+        public async Task<IEnumerable<Ngo>> BrowseAsync(string state = "")
         {
-            if (string.IsNullOrWhiteSpace(type))
+            if (string.IsNullOrWhiteSpace(state))
             {
                 return await _repository.FindAsync(_ => true);
             }
-            switch (type.ToLowerInvariant())
-            {
-                case "new": return await _repository.FindAsync(x => !x.Approved && !x.Rejected);
-                case "approved": return await _repository.FindAsync(x => x.Approved);
-                case "rejected": return await _repository.FindAsync(x => x.Rejected);
-            }
             
-            return Enumerable.Empty<Ngo>();
+            return await _repository.FindAsync(x => x.State == state);
         }
 
         public async Task CreateAsync(Ngo ngo)
