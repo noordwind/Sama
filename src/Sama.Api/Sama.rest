@@ -1,13 +1,13 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDI4N2NhMy1jNWU5LTQ3ZWUtODVjOC0zMWIxYjgxOTQ1ZDIiLCJ1bmlxdWVfbmFtZSI6IjlkMjg3Y2EzLWM1ZTktNDdlZS04NWM4LTMxYjFiODE5NDVkMiIsImp0aSI6IjJhNzRlNjFlLWQzMjEtNDFlYy04MzgwLTY4NTAxYTBkOGVmOSIsImlhdCI6IjE1MjczMTkxMTYzOTMiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiIsIm5iZiI6MTUyNzMxOTExNiwiZXhwIjoxNTI3MzIyNzE2LCJpc3MiOiJzYW1hLWlkZW50aXR5LXNlcnZpY2UifQ.CpRoMFzHaAFRNauvYjM0udeVvuZtJ8eRQzdxyIH68r8
-@ngoId = c44c7a31-2c24-467c-86db-aeb9dd56ad33
-@childId = 
+@token = xxxxxxxxxxxx
+@ngoId = xxxxxxxxxxxx
+@childId = xxxxxxxxxxxx
 @url = localhost:5000
 
 POST http://{{url}}/sign-up
 content-type: application/json
 
 {
-	"email": "admin@sama.network",
+	"email": "user1@sama.network",
 	"username": "user1",
 	"password": "secret",
 	"role": "user"
@@ -18,7 +18,7 @@ POST http://{{url}}/sign-in
 content-type: application/json
 
 {
-	"email": "admin@sama.network",
+	"email": "user1@sama.network",
 	"password": "secret"
 }
 
@@ -48,7 +48,7 @@ authorization: bearer {{token}}
 content-type: application/json
 
 {
-	"funds": 4850
+	"funds": 2000
 }
 
 ###
@@ -98,12 +98,12 @@ content-type: application/json
 }
 
 ###
-POST http://{{url}}/ngos/{{ngoId}}/children/{{childId}/donate
+POST http://{{url}}/ngos/{{ngoId}}/children/{{childId}}/donate
 authorization: bearer {{token}}
 content-type: application/json
 
 {
-	"funds": 1500
+	"funds": 1600
 }
 
 ###

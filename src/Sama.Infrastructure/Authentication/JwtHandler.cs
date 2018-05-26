@@ -61,6 +61,7 @@ namespace Sama.Infrastructure.Authentication
             return new JsonWebToken
             {
                 AccessToken = token,
+                Role = role,
                 Expires = expires.ToTimestamp()
             };
         }
