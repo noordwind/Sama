@@ -111,12 +111,10 @@ namespace Sama.Services.Data
 
             foreach (var user in users)
             {
-                var donation = user.Donate(Guid.NewGuid(), ngo.Id, ngo.Name, 600, "hash");
+                var donation = user.DonateNgo(Guid.NewGuid(), ngo, 600, "hash");
                 await Database.GetCollection<User>("Users").ReplaceOneAsync(x => x.Id == user.Id, user);
-                ngo.Donate(donation);
+                ngo.DonateChildren(donation);
             }
-
-            ngo.DistributeFundsToChildren();
             foreach (var child in children)
             {
                 var childInfo = ngo.Children.Single(x => x.Id == child.Id);

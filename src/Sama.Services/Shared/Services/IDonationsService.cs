@@ -5,6 +5,7 @@ namespace Sama.Services.Shared.Services
 {
     public interface IDonationsService
     {
-        Task DonateAsync(Guid ngoId, Guid userId, decimal value);
+        Task DonateNgoAsync(Guid ngoId, Guid userId, decimal value);
+        Task DonateChildAsync(Guid ngoId, Guid childId, Guid userId, decimal value);
     }
 }

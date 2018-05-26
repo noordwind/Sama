@@ -58,14 +58,21 @@ namespace Sama.Core.Domain.Ngos
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void Donate(Donation donation)
+        public void DonateChild(Donation donation)
         {
-            Donations.Add(donation);
-            AvailableFunds += donation.Value;
+            Donate(donation);
+            var child = Children.SingleOrDefault(x => x.Id == donation.ChildId);
+            if (child == null)
+            {
+                throw new DomainException("child_not_found", 
+                    $"Child with id: '{donation.ChildId}' was not found.");
+            }
+            child.Donate(donation.Value);
         }
 
-        public void DistributeFundsToChildren()
+        public void DonateChildren(Donation donation)
         {
+            Donate(donation);
             if (Children.Count == 0 || AvailableFunds == 0)
             {
                 return;
@@ -93,6 +100,12 @@ namespace Sama.Core.Domain.Ngos
                 DonatedFunds += neededFunds;
                 AvailableFunds -= neededFunds;
             }
+        }
+        
+        private void Donate(Donation donation)
+        {
+            Donations.Add(donation);
+            AvailableFunds += donation.Value;
         }
 
         public void AddChildren(IEnumerable<Child> children)

@@ -14,6 +14,6 @@ namespace Sama.Services.Ngos.Handlers
         }
 
         public async Task HandleAsync(DonateNgo command)
-            => await _donationsService.DonateAsync(command.NgoId, command.UserId, command.Funds);
+            => await _donationsService.DonateNgoAsync(command.NgoId, command.UserId, command.Funds);
     }
 }

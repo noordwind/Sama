@@ -23,10 +23,15 @@ namespace Sama.Api.Controllers
         [Ngo]
         public async Task<IActionResult> Post(Guid ngoId, [FromBody] AddChildren command)
             => await DispatchAsync(command.Bind(c => c.NgoId, ngoId));
-        
+
         [HttpPut]
         [Ngo]
         public async Task<IActionResult> Put(Guid ngoId, [FromBody] EditChildren command)
             => await DispatchAsync(command.Bind(c => c.NgoId, ngoId));
+
+        [HttpPost("{childId}/donate")]
+        public async Task<IActionResult> Donate(Guid ngoId, Guid childId, [FromBody] DonateChild command)
+            => await DispatchAsync(command.Bind(c => c.NgoId, ngoId)
+                .Bind(c => c.ChildId, childId).Bind(c => c.UserId, UserId));
     }
 }
