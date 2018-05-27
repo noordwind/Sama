@@ -19,8 +19,8 @@ namespace Sama.Core.Domain.Identity
         public string Username { get; protected set; }
         public string Role { get; protected set; }
         public string PasswordHash { get; protected set; }
+        public decimal Funds { get; protected set; }
         public decimal DonatedFunds { get; protected set; }
-        public decimal Funds => Payments.Sum(x => x.Value) - DonatedFunds;
         public Wallet Wallet { get; protected set; } = new Wallet(0);
         public IList<Payment> Payments { get; protected set; } = new List<Payment>();
         public IList<Donation> Donations { get; protected set; } = new List<Donation>();
@@ -68,6 +68,7 @@ namespace Sama.Core.Domain.Identity
         public void AddFunds(Payment payment)
         {
             var funds = payment.Value + Wallet.Funds;
+            Funds = funds;
             Wallet = new Wallet(funds);
             Payments.Add(payment);
         }
@@ -99,7 +100,9 @@ namespace Sama.Core.Domain.Identity
                     "Insufficient funds for donation.");
             }
             DonatedFunds += value;
-            Wallet = new Wallet(funds - value);
+            var updatedFunds = funds - value;
+            Wallet = new Wallet(updatedFunds);
+            Funds = updatedFunds;
         }
     }
 }
