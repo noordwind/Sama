@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Sama.Core.Domain.Identity.Events;
 using Sama.Core.Domain.Ngos;
@@ -19,6 +20,7 @@ namespace Sama.Core.Domain.Identity
         public string Role { get; protected set; }
         public string PasswordHash { get; protected set; }
         public decimal DonatedFunds { get; protected set; }
+        public decimal Funds => Payments.Sum(x => x.Value) - DonatedFunds;
         public Wallet Wallet { get; protected set; } = new Wallet(0);
         public IList<Payment> Payments { get; protected set; } = new List<Payment>();
         public IList<Donation> Donations { get; protected set; } = new List<Donation>();

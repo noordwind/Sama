@@ -7,8 +7,7 @@ POST http://{{url}}/sign-up
 content-type: application/json
 
 {
-	"email": "user1@sama.network",
-	"username": "user1",
+	"email": "user11@sama.network",
 	"password": "secret",
 	"role": "user"
 }
@@ -18,7 +17,7 @@ POST http://{{url}}/sign-in
 content-type: application/json
 
 {
-	"email": "user1@sama.network",
+	"email": "user11@sama.network",
 	"password": "secret"
 }
 
